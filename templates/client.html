@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+    <title>Document</title>
+</head>
+<body>
+    <form action="/pw" method="post">
+        {% for cat in categories %}
+        <details open>
+            <summary>{{ cat.name }}</summary>
+            <table>
+                {% for mod in cat.mods %}
+                <tr>
+                    <td>{% if mod.server_only %}
+                        Mod serveur uniquement
+                        {% elif mod.compatibility %}
+                        <input type="checkbox" name="{{ mod.slug }}" id="{{ mod.slug }}"></td>
+                    {% endif %}
+                    {% if not mod.compatibility %}
+                        {{ mod.game_versions | last}}<br>
+                        Dernière mise à jour :<br>
+                        {{ mod.updated }}
+                    {% endif %}
+                        <td><a href="https://modrinth.com/mod/{{ mod.slug }}" target="_blank"><img src="{{ mod.icon_url }}" alt="Icon"></a></td>
+                    <td>{{ mod.title }}<br>{{ mod.description }}</td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </details>
+        {% endfor %}
+        <input type="submit" value="Générer un lien">
+    </form>
+</body>
+</html>
