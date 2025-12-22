@@ -1,7 +1,9 @@
 # Modpack generator for dummies
 
 Modder son instance minecraft, ça a toujours été un plaisir.
+
 Seulement, les (faibles) efforts demandés peuvent arrêter les néophytes.
+
 Dans l'objectif de partager ce plaisir, il est nécessaire de réduire au minimum les tâches répétitives.
 
 Mais comment ?
@@ -28,19 +30,20 @@ reeses-sodium-options
 
 
 ## ToDo
-[x] PoC
-[ ] refactor & clean
-[ ] préparer instance [MultiMC](https://multimc.org/) à laquelle sera ajoutée [packwiz-installer](https://packwiz.infra.link/tutorials/installing/packwiz-installer/)
-[ ] traduire en anglais
-[ ] Déployer avec [Gunicorn](https://gunicorn.org/) dans un container
-[ ] un chouille plus de CSS ?
-[ ] variables d'environnement pour liste de mods, auteur, mc_version...
+- [x] PoC
+- [ ] refactor & clean
+- [ ] préparer instance [MultiMC](https://multimc.org/) à laquelle sera ajoutée [packwiz-installer](https://packwiz.infra.link/tutorials/installing/packwiz-installer/)
+- [ ] traduire en anglais
+- [ ] Déployer avec [Gunicorn](https://gunicorn.org/) dans un container
+- [ ] un chouille plus de CSS ?
+- [ ] variables d'environnement pour liste de mods, auteur, mc_version...
+- [ ] trouver une licence correcte
 
 ## Fonctionnalités à ajouter
-[ ] Gestion modpack pour serveur
-[ ] Ajouter de la capture d'erreurs ?
-[ ] hash pour modpacks identiques
-[ ] URL personnalisées
-[ ] multiples listes de mods ?
-[ ] outil d'aide à la création de liste
-[ ] traduction/personnalisation des descriptions
+- [ ] Gestion modpack pour serveur
+- [ ] Ajouter de la capture d'erreurs ?
+- [ ] hash pour modpacks identiques
+- [ ] URL personnalisées
+- [ ] multiples listes de mods ?
+- [ ] outil d'aide à la création de liste
+- [ ] traduction/personnalisation des descriptions
