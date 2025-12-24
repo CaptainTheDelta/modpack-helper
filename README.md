@@ -31,19 +31,22 @@ reeses-sodium-options
 
 ## ToDo
 - [x] PoC
-- [ ] refactor & clean
+- [x] refactor & clean
 - [ ] préparer instance [MultiMC](https://multimc.org/) à laquelle sera ajoutée [packwiz-installer](https://packwiz.infra.link/tutorials/installing/packwiz-installer/)
 - [ ] traduire en anglais
 - [ ] Déployer avec [Gunicorn](https://gunicorn.org/) dans un container
-- [ ] un chouille plus de CSS ?
-- [ ] variables d'environnement pour liste de mods, auteur, mc_version...
-- [ ] trouver une licence correcte
+- [x] trouver une licence correcte
 
 ## Fonctionnalités à ajouter
 - [ ] Gestion modpack pour serveur
 - [ ] Ajouter de la capture d'erreurs ?
 - [ ] hash pour modpacks identiques
+- [ ] infos modpack dans la liste de mods (auteur, mc_version, etc)
 - [ ] URL personnalisées
 - [ ] multiples listes de mods ?
 - [ ] outil d'aide à la création de liste
 - [ ] traduction/personnalisation des descriptions
+- [ ] affichage d'une config depuis un token
+- [ ] affichage de tous les tokens générés ou personnalisés
+- [ ] filtres côté interface utilisateur (version mc, serveur/client, (pas) à jour, etc)
+- [ ] tri (par défaut, catégories, nb de téléchargement, MàJ)
