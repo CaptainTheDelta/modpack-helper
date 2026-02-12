@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block main %}
+<h2>Config pour {{ modpack.name }} v{{ modpack.version }} [{{ modpack.game_version}}] par {{ modpack.author }}</h2>
+
+{% for category in mods %}
+    <h3>{{ category }}</h3>
+    {% for mod in mods[category] %}
+        <p>{{ mod }}</p>
+        <p>{{ mod.slug }}</p>
+    {% endfor %}
+{% endfor %}
+
+
+{% endblock %}

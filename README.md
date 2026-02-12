@@ -10,21 +10,23 @@ Mais comment ?
 
 ### Côté experimenté :
 1. en sélectionnant une liste de mods disponibles sur [Modrinth](https://modrinth.com/discover/mods) sous la forme suivante :
-```
-author=CaptainTheDelta
-mc_version=1.21.11
-name=test
-version=0.0.2
+```yaml
+infos:
+  author: CaptainTheDelta
+  version: 0.3.1
+  mc_version: 1.21.11
+  name: Together
 
-# Minimum
-modmenu
-no-chat-reports
-simple-voice-chat
-
-# Opti & fixes
-sodium
-sodium-extra
-reeses-sodium-options
+mods:
+  Catégorie:
+    mod-sans-description:
+    mod-avec-description:
+      desc: En une ligne
+      env: [singleplayer, server-side]
+    autre-mod:
+      desc: |
+        Description en deux lignes.
+        Et oui.
 ```
 2. en hébergeant ce projet
 

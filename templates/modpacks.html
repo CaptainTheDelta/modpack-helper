@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Tableau de bord{% endblock %}
+
+{% block main%}
+    <h2>Modpacks - Tableau de bord</h2>
+
+    <h3>OK</h3>
+    {% for m in modpacks.ok %}
+        [{{ m.game_version}}] <a href="/config/{{ m.uuid }}">{{ m.name }}</a> ({{ m.version }}) par {{ m.author }}
+        <form method="post" data-noredirect action="/api/modpack/update/{{ m.uuid }}">
+            <input type="submit" value="Mettre à jour">
+        </form>
+        <form method="post" data-noredirect action="/api/modpack/remove/{{ m.uuid }}">
+            <input type="submit" value="Supprimer">
+        </form>
+    {% endfor %}
+
+    <h3>à ajouter</h3>
+    {% for m in modpacks.to_add %}
+        [{{ m.game_version}}] {{ m.name }} ({{ m.version }}) par {{ m.author }}
+        <form method="post" data-noredirect action="/api/modpack/add/{{ m.uuid }}">
+            <input type="text" name="filename" value="{{ m.filename }}" hidden>
+            <input type="submit" value="Ajouter">
+        </form>
+    {% endfor %}
+
+    <h3>à supprimer</h3>
+    {% for m in modpacks.to_remove %}
+        [{{ m.game_version}}] {{ m.name }} ({{ m.version }}) par {{ m.author }}
+        <form method="post" data-noredirect action="/api/modpack/remove/{{ m.uuid }}" target="_blank">
+            <input type="submit" value="Supprimer">
+        </form>
+    {% endfor %}
+{% endblock %}
