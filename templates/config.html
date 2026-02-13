@@ -2,35 +2,63 @@
 
 {% block main %}
 <h2>Config pour {{ modpack.name }} v{{ modpack.version }} [{{ modpack.game_version}}] par {{ modpack.author }}</h2>
-<form action="" method="post">
+<form action="/generation" method="post">
     {% for category in mods %}
     <h3>{{ category }}</h3>
         {% for mod in mods[category] %}
-        <article>
-            {% if mod.title %}
-            <input type="checkbox" name="{{ mod.slug }}" hidden>
-            <img src="{% if mod.icon_url %}{{ mod.icon_url }}{% else %}https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Rubber_duckies_So_many_ducks.jpg/330px-Rubber_duckies_So_many_ducks.jpg{% endif %}" alt="Image pour {{ mod.category}}">
-            <div>
-                <h4>{{ mod.title }}</h4>
-                <p>{{ mod.description }}</p>
-            </div>
-            <div>
-                {% if mod.compatibility %}
-                <p>Compatible</p>
-                {% else %}
-                <p>Dernière mise à jour<br>{{ mod.updated }}</p>
-                {% endif %}
-            </div>
-            {% else %}
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Rubber_duckies_So_many_ducks.jpg/330px-Rubber_duckies_So_many_ducks.jpg" alt="Image par défaut">
-            <div>
-                <h4>{{ mod.slug }}</h4>
-            </div>
-            <div>
-                <p>Inconnu</p>
-            </div>
-            {% endif %}
-        </article>
+        <label for="cbx-{{ mod.slug }}">
+            <input type="checkbox" name="{{ mod.slug }}" id="cbx-{{ mod.slug }}" hidden {% if  not mod.compatibility %}disabled{% endif %}>
+            <article>
+                <div  class="images">
+                    <a href="https://modrinth.com/mod/{{ mod.slug }}" target="_blank">
+                        <img srcset="{% if mod.icon_url %}{{ mod.icon_url }},{% else %}{{ url_for('static', filename='default.svg') }}{% endif %}" alt="Image for {{ mod.slug }}">
+                    </a>
+                    <ul class="dependencies">
+                        <li>
+                            <a href="https://modrinth.com/mods" target="_blank">
+                                <img srcset="{{ url_for('static', filename='default.svg') }}">
+                            </a>
+                        </li>
+                        {% for d in mod.depencies %}
+                        <li>
+                            <a href="https://modrinth.com/mod/{{ d.slug }}">
+                                <img srcset="{% if d.icon_url %}{{ d.icon_url }},{% else %}{{ url_for('static', filename='default.svg') }}{% endif %}" alt="Image for {{ d.slug }}">
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="infos">
+                    <div class="main">
+                        <h4>
+                        {% if mod.title %}
+                            {% if  not mod.compatibility %}[INCOMPATIBLE]{% endif %}
+                            <a href="https://modrinth.com/mod/{{ mod.slug }}" target="_blank">
+                                {{ mod.title }}
+                            </a>
+                        {% else %}
+                            {{ mod.slug}}
+                        {% endif%}
+                        </h4>
+                        <p>{{ mod.description }}</p>
+                    </div>
+                    <div class="complementaries">
+                        <p class="license">{{ mod.license.id }}</p>
+                        <p class="updated">Dernière MàJ<br>{{ mod.updated }}</p>
+                    </div>
+                </div>
+                <div class="categories">
+                    {% if mod.categories %}
+                    <ul>
+                        <li>aventure</li>
+                        {% for c in categories %}
+                        <li>{{ c }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+            </article>
+        </label>
         {% endfor %}
     {% endfor %}
     <input type="submit" value="Générer un modpack">

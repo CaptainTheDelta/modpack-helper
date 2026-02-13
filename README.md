@@ -35,22 +35,50 @@ mods:
 2. générer le modpack [packwiz](https://packwiz.infra.link/) et noter l'url
 3. renseigner l'url dans l'instance [MultiMC](https://multimc.org/)
 
+## Fonctionnalités implémentées
+- [x] Gestion de multiples modpacks
+- [x] Synchronisation automatisée à la demande
+- [x] Sous-sélection de mods
+- [ ] Génération d'un modpack packwiz
+- [ ] URL personnalisée
+- [ ] Profils : Singleplayer, Multiplayer côté client, Multiplayer côté serveur
 
-## ToDo
-- [x] PoC
-- [x] refactor & clean
+## Roadmap
+1. Sélection
+- [x] CSS minimum
+- [ ] Media query
+
+2. Generation
+- [ ] Dossier temporaire
+- [ ] Création modpack
+- [ ] Ajout des mods
+
+3. Validation
+- [ ] Invite
+- [ ] Déplacement
+
+4. Partage
+- [ ] servir le dossier
+- [ ] customisation URL
+
+5. Gestion des générés
+- [ ] Enregistrement bdd & check avant génération
+- [ ] Gestion via interface modpacks
+
+6. Amélioration interface
+- [ ] Catégories
+- [ ] Licenses
+- [ ] Filtres
+- [ ] Recherche
+- [ ] Profil
+
+### Simplification de la vie utilisateur
 - [ ] préparer instance [MultiMC](https://multimc.org/) à laquelle sera ajoutée [packwiz-installer](https://packwiz.infra.link/tutorials/installing/packwiz-installer/)
 - [ ] traduire en anglais
 - [ ] Déployer avec [Gunicorn](https://gunicorn.org/) dans un container
-- [x] trouver une licence correcte
 
 ## Fonctionnalités à ajouter
-- [ ] Gestion modpack pour serveur
-- [ ] Ajouter de la capture d'erreurs ?
-- [ ] hash pour modpacks identiques
-- [x] infos modpack dans la liste de mods (auteur, mc_version, etc)
-- [ ] URL personnalisées
-- [ ] multiples listes de mods ?
+- [x] multiples listes de mods ?
 - [ ] outil d'aide à la création de liste
 - [ ] traduction/personnalisation des descriptions
 - [ ] affichage d'une config depuis un token

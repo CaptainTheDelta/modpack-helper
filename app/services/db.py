@@ -2,6 +2,7 @@ from app import db
 from app.models import *
 from app.services.storage import *
 from app.services.utils import get_value
+import json
 
 def get_db_modpacks():
     """Renvoie la liste des modpacks présents dans la base de donnée."""
@@ -36,9 +37,12 @@ def get_modpack_mods(uuid):
             mod["discuss"] = relation.discuss
             mod["compatibility"] = relation.compatibility
 
-            if mod["updated"]:
+            if mod["title"]:
                 mod["updated"] = mod["updated"].strftime("%d/%m/%Y")
+                mod["license"] = json.loads(mod["license"])
+                mod["categories"] = json.loads(mod["categories"])
             if relation.description != "":
+                print(f"{relation.description}")
                 mod["description"] = relation.description
             
             mods[relation.category].append(mod)
