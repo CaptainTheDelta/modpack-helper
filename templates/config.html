@@ -2,14 +2,37 @@
 
 {% block main %}
 <h2>Config pour {{ modpack.name }} v{{ modpack.version }} [{{ modpack.game_version}}] par {{ modpack.author }}</h2>
-
-{% for category in mods %}
+<form action="" method="post">
+    {% for category in mods %}
     <h3>{{ category }}</h3>
-    {% for mod in mods[category] %}
-        <p>{{ mod }}</p>
-        <p>{{ mod.slug }}</p>
+        {% for mod in mods[category] %}
+        <article>
+            {% if mod.title %}
+            <input type="checkbox" name="{{ mod.slug }}" hidden>
+            <img src="{% if mod.icon_url %}{{ mod.icon_url }}{% else %}https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Rubber_duckies_So_many_ducks.jpg/330px-Rubber_duckies_So_many_ducks.jpg{% endif %}" alt="Image pour {{ mod.category}}">
+            <div>
+                <h4>{{ mod.title }}</h4>
+                <p>{{ mod.description }}</p>
+            </div>
+            <div>
+                {% if mod.compatibility %}
+                <p>Compatible</p>
+                {% else %}
+                <p>Dernière mise à jour<br>{{ mod.updated }}</p>
+                {% endif %}
+            </div>
+            {% else %}
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Rubber_duckies_So_many_ducks.jpg/330px-Rubber_duckies_So_many_ducks.jpg" alt="Image par défaut">
+            <div>
+                <h4>{{ mod.slug }}</h4>
+            </div>
+            <div>
+                <p>Inconnu</p>
+            </div>
+            {% endif %}
+        </article>
+        {% endfor %}
     {% endfor %}
-{% endfor %}
-
-
+    <input type="submit" value="Générer un modpack">
+</form>
 {% endblock %}

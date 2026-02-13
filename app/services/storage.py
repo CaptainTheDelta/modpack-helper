@@ -1,6 +1,7 @@
 import os
 import yaml
 from flask import current_app
+from app.services.utils import slugs_only
 
 def read_modpack_desc(filename, add_path=True):
     """Renvoie la description du modpack contenue dans le fichier."""
@@ -25,13 +26,6 @@ def read_modpack_mods(filename):
         config = yaml.safe_load(f)
     
     return config.get("mods")
-
-def slugs_only(categories : dict):
-    """Renvoie la liste des slugs."""
-    slugs = []
-    for c in categories:
-        slugs.extend(categories[c].keys())
-    return slugs
     
 def get_modpacks_files():
     """Renvoie la liste des noms de fichiers contenus dans le dossier

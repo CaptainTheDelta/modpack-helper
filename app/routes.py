@@ -1,7 +1,6 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request
 
 from app.api import *
-
 
 bp = Blueprint("routes", __name__)
 
@@ -18,13 +17,11 @@ def modpacks_dashboard():
 
 @bp.route("/config/<uuid>")
 def modpack_configurator(uuid):
-    # récupérer les infos du modpack
     modpack = get_modpack(uuid)
+    if modpack == {}:
+        return f"{uuid} n'existe pas, déso"
+
     mods = get_modpack_mods(uuid)
-
-    from pprint import pp
-    pp(mods)
-
     return render_template("config.html", modpack=modpack, mods=mods)
 
 @bp.route("/mdpk/<uuid>")

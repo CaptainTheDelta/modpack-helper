@@ -2,8 +2,9 @@ from flask import Blueprint, request, jsonify
 
 from app.models import Modpack
 from app.services.db import *
-from app.services.storage import *
 from app.services.modrinth import get_modrinth_infos, get_mod_dependencies
+from app.services.storage import *
+from app.services.utils import slugs_only
 
 bp = Blueprint("api", __name__)
 
@@ -59,7 +60,7 @@ def update_modpack(uuid, filename="", mods_by_categories=[]):
         if filename == "":
             filename = get_modpack_filename(uuid)
         mods_by_categories = read_modpack_mods(filename)
-    
+
     slugs = slugs_only(mods_by_categories)
     mods_infos = get_modrinth_infos(slugs)
 

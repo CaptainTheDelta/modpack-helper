@@ -9,7 +9,9 @@ def get_db_modpacks():
     return [m[0] for m in modpacks]
 
 def get_modpack(uuid):
-    return db.session.execute(db.select(Modpack).filter_by(uuid=uuid)).one()[0]
+    sql_stmt = db.select(Modpack).filter_by(uuid=uuid)
+    modpack = db.session.execute(sql_stmt).one_or_none()
+    return modpack[0] if modpack else {}
 
 def get_modpack_filename(uuid):
     """Renvoie le nom de fichier assoscié au modpack."""
@@ -28,19 +30,18 @@ def get_modpack_mods(uuid):
     sql_stmt = db.select(ModpackMod).filter_by(modpack=uuid).order_by(ModpackMod.category)
     for relation in db.session.execute(sql_stmt).all():
         relation = relation[0]
-        mod = db.session.execute(db.select(Mod).filter_by(slug=relation.mod)).one()[0]
-        mod = mod.to_dict()
+        sql_stmt = db.select(Mod).filter_by(slug=relation.mod)
+        if mod := db.session.execute(sql_stmt).one_or_none():
+            mod = mod[0].to_dict()
+            mod["discuss"] = relation.discuss
+            mod["compatibility"] = relation.compatibility
 
-        mod["discuss"] = relation.discuss
-        mod["compatibility"] = relation.compatibility
-
-        if mod["updated"]:
-            mod["updated"] = mod["updated"].strftime("%d/%m/%Y")
-        if relation.description != "":
-            mod["description"] = relation.description
-        
-        
-        mods[relation.category].append(mod)
+            if mod["updated"]:
+                mod["updated"] = mod["updated"].strftime("%d/%m/%Y")
+            if relation.description != "":
+                mod["description"] = relation.description
+            
+            mods[relation.category].append(mod)
     
     return mods
 
@@ -61,15 +62,16 @@ def add_mods(slugs):
 def update_mods(mods_infos):
     for infos in mods_infos:
         sql_stmt = db.select(Mod).filter_by(slug=infos["slug"])
-        mod = db.session.execute(sql_stmt).one()[0]
 
-        mod.title = infos["title"]
-        mod.description = infos["description"]
-        mod.updated = infos["updated"]
-        mod.license = infos["license"]
-        mod.downloads = infos["downloads"]
-        mod.categories = infos["categories"]
-        mod.icon_url = infos["icon_url"]
+        if mod := db.session.execute(sql_stmt).one_or_none():
+            mod = mod[0]
+            mod.title = infos["title"]
+            mod.description = infos["description"]
+            mod.updated = infos["updated"]
+            mod.license = infos["license"]
+            mod.downloads = infos["downloads"]
+            mod.categories = infos["categories"]
+            mod.icon_url = infos["icon_url"]
 
     db.session.commit()
 
@@ -83,7 +85,7 @@ def update_relations_modpack_mod(uuid, mods_by_categories, mods_infos):
     # on supprime toutes les relations
     sql_stmt = db.select(ModpackMod).where(ModpackMod.modpack==uuid)
     for relation in db.session.execute(sql_stmt).all():
-        db.session.remove(relation[0])
+        db.session.delete(relation[0])
 
     # vérif de la compatibilité
     game_version = get_modpack_game_version(uuid)

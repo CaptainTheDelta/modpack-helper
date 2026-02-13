@@ -10,7 +10,6 @@ def create_app():
 
     db.init_app(app)
     
-    from app.models import Modpack
     with app.app_context():
         db.create_all()
 
