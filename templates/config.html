@@ -50,8 +50,7 @@
                 <div class="categories">
                     {% if mod.categories %}
                     <ul>
-                        <li>aventure</li>
-                        {% for c in categories %}
+                        {% for c in mod.categories %}
                         <li>{{ c }}</li>
                         {% endfor %}
                     </ul>
