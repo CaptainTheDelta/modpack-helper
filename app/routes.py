@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, make_response, render_template, request, redirect, send_from_directory
 
 from app.api import *
 
@@ -24,7 +24,16 @@ def modpack_configurator(uuid):
     mods = get_modpack_mods(uuid)
     return render_template("config.html", modpack=modpack, mods=mods)
 
-@bp.route("/mdpk/<uuid>")
-def modpack_serve(uuid):
-    "Lien du modpack généré et prêt à l'emploi"
-    return f"Under construction page for {uuid}"
+@bp.post("/generation")
+def generate():
+    r = request.form
+    print(r)
+    return render_template("generation.html", slugs=request.form.keys())
+
+@bp.route("/mdpk/<url>", defaults={"path": ""})
+@bp.route("/mdpk/<url>/<path:path>")
+def serve_modpack(url, path):
+    path = '/'.join([get_uuid_from_url(url), path])
+    r = make_response(send_from_directory("instances", path))
+    r.mimetype = "text/plain"
+    return r

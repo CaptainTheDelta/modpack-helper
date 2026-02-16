@@ -40,9 +40,9 @@ def get_modpack_mods(uuid):
             if mod["title"]:
                 mod["updated"] = mod["updated"].strftime("%d/%m/%Y")
                 mod["license"] = json.loads(mod["license"])
+                print(mod["categories"])
                 mod["categories"] = json.loads(mod["categories"])
             if relation.description != "":
-                print(f"{relation.description}")
                 mod["description"] = relation.description
             
             mods[relation.category].append(mod)
@@ -123,3 +123,6 @@ def clean_unused_mods():
     for mod in db.session.execute(sql_stmt).all():
         db.session.delete(mod[0])
     db.session.commit()
+
+def get_uuid_from_url(url):
+    return url

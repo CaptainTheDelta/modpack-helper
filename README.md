@@ -49,7 +49,7 @@ mods:
 - [ ] Media query
 
 2. Generation
-- [ ] Dossier temporaire
+- [x] Dossier temporaire
 - [ ] Création modpack
 - [ ] Ajout des mods
 
@@ -58,7 +58,7 @@ mods:
 - [ ] Déplacement
 
 4. Partage
-- [ ] servir le dossier
+- [x] servir le dossier
 - [ ] customisation URL
 
 5. Gestion des générés
@@ -68,8 +68,7 @@ mods:
 6. Amélioration interface
 - [ ] Catégories
 - [ ] Licenses
-- [ ] Filtres
-- [ ] Recherche
+- [ ] Recherche & filtres
 - [ ] Profil
 
 ### Simplification de la vie utilisateur
@@ -78,10 +77,8 @@ mods:
 - [ ] Déployer avec [Gunicorn](https://gunicorn.org/) dans un container
 
 ## Fonctionnalités à ajouter
-- [x] multiples listes de mods ?
 - [ ] outil d'aide à la création de liste
 - [ ] traduction/personnalisation des descriptions
 - [ ] affichage d'une config depuis un token
-- [ ] affichage de tous les tokens générés ou personnalisés
 - [ ] filtres côté interface utilisateur (version mc, serveur/client, (pas) à jour, etc)
 - [ ] tri (par défaut, catégories, nb de téléchargement, MàJ)

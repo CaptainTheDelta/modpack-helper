@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block main %}
+<h2>Creation du modpack...</h2>
+<ul>
+    {% for slug in slugs %}
+    <li>{{ slug }}</li>
+    {% endfor %}
+</ul>
+    
+{% endblock %}
