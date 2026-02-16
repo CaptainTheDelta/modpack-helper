@@ -1,6 +1,10 @@
 from flask import Blueprint, make_response, render_template, request, redirect, send_from_directory
 
 from app.api import *
+from app.services.utils import get_instance_uuid
+from app.services.packwiz import PackwizModpack
+from app.services.storage import move_modpack, get_tmp_folder
+from app.services.db import instance_already_exists
 
 bp = Blueprint("routes", __name__)
 
@@ -26,9 +30,22 @@ def modpack_configurator(uuid):
 
 @bp.post("/generation")
 def generate():
-    r = request.form
-    print(r)
-    return render_template("generation.html", slugs=request.form.keys())
+    mods = request.form
+    modpack_uuid = request.referrer.split('/')[-1]
+
+    uuid = get_instance_uuid(modpack_uuid, mods)
+
+    if not instance_already_exists(uuid):
+        folder = get_tmp_folder()
+        print(folder)
+        packwiz_modpack = PackwizModpack(folder)
+        packwiz_modpack.set_infos(get_modpack_infos(modpack_uuid))
+        if packwiz_modpack.set_mods(mods):
+            move_modpack(folder, uuid)
+
+    return render_template("generation.html", uuid=uuid)
+
+
 
 @bp.route("/mdpk/<url>", defaults={"path": ""})
 @bp.route("/mdpk/<url>/<path:path>")

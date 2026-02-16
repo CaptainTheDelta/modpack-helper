@@ -55,3 +55,7 @@ class Mod(db.Model):
     
     def to_dict(self):
         return dict((col, getattr(self, col)) for col in self.__table__.columns.keys())
+
+class Instance(db.Model):
+    uuid = db.Column(db.String, primary_key=True)
+    modpack = db.Column(db.String, nullable=False)

@@ -3,3 +3,5 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     UPLOAD_FOLDER = "modpacks"
     USER_AGENT = "CaptainTheDelta/modpack-helper/v0.9"
+
+    PACKWIZ_BIN = "/usr/local/bin/packwiz"

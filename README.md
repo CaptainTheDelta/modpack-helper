@@ -39,9 +39,10 @@ mods:
 - [x] Gestion de multiples modpacks
 - [x] Synchronisation automatisée à la demande
 - [x] Sous-sélection de mods
-- [ ] Génération d'un modpack packwiz
+- [x] Génération d'un modpack packwiz
 - [ ] URL personnalisée
 - [ ] Profils : Singleplayer, Multiplayer côté client, Multiplayer côté serveur
+- [ ] Conservation des instances après MàJ modpacks
 
 ## Roadmap
 1. Sélection
@@ -50,8 +51,8 @@ mods:
 
 2. Generation
 - [x] Dossier temporaire
-- [ ] Création modpack
-- [ ] Ajout des mods
+- [x] Création modpack
+- [x] Ajout des mods
 
 3. Validation
 - [ ] Invite
@@ -62,7 +63,7 @@ mods:
 - [ ] customisation URL
 
 5. Gestion des générés
-- [ ] Enregistrement bdd & check avant génération
+- [x] Enregistrement bdd & check avant génération
 - [ ] Gestion via interface modpacks
 
 6. Amélioration interface

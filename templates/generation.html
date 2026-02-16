@@ -1,11 +1,7 @@
 {% extends "base.html" %}
 
 {% block main %}
-<h2>Creation du modpack...</h2>
-<ul>
-    {% for slug in slugs %}
-    <li>{{ slug }}</li>
-    {% endfor %}
-</ul>
+<h2>Modpack disponible à : <a href="/mdpk/{{ uuid }}/index.toml">{{ request.url_root }}mdpk/{{ uuid }}/index.toml</a></h2>
+
     
 {% endblock %}

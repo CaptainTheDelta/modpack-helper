@@ -1,7 +1,10 @@
 import os
+import shutil
 import yaml
 from flask import current_app
 from app.services.utils import slugs_only
+
+from tempfile import mkdtemp as get_tmp_folder
 
 def read_modpack_desc(filename, add_path=True):
     """Renvoie la description du modpack contenue dans le fichier."""
@@ -33,3 +36,7 @@ def get_modpacks_files():
     upload_folder = current_app.config["UPLOAD_FOLDER"]
     scan = os.scandir(upload_folder)
     return [f.name for f in scan if f.is_file()]
+
+def move_modpack(folder, uuid):
+    path = os.path.join("instances", uuid)
+    shutil.move(folder, path)

@@ -22,6 +22,12 @@ def get_modpack_game_version(uuid):
     """Renvoie la version de minecraft assosciée au modpack."""
     return get_modpack(uuid).game_version
 
+def get_modpack_infos(uuid):
+    print(uuid)
+    modpack = get_modpack(uuid)
+    print(modpack)
+    return modpack.infos()
+
 def get_modpack_mods(uuid):
     mods = {}
     sql_stmt = db.select(ModpackMod.category).filter_by(modpack=uuid).group_by(ModpackMod.category)
@@ -46,7 +52,6 @@ def get_modpack_mods(uuid):
                 mod["description"] = relation.description
             
             mods[relation.category].append(mod)
-    
     return mods
 
 def add_modpack_description(infos, check=None):
@@ -126,3 +131,11 @@ def clean_unused_mods():
 
 def get_uuid_from_url(url):
     return url
+
+def add_instance(instance_uuid, modpack_uuid):
+    db.session.add(Instance(uuid=instance_uuid, modpack=modpack_uuid))
+    db.session.commit()
+
+def instance_already_exists(uuid):
+    sql_stmt = db.select(Instance).where(Instance.uuid==uuid)
+    return db.session.execute(sql_stmt).first() != None
