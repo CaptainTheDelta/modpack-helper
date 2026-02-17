@@ -1,8 +1,8 @@
 class Config:
     SQLALCHEMY_DATABASE_URI = "sqlite:///database.db"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    UPLOAD_FOLDER = "modpacks"
-    DOWNLOAD_FOLDER = "instances"
+    UPLOAD_FOLDER = "instance/modpacks"
+    DOWNLOAD_FOLDER = "instance/mdpk"
     USER_AGENT = "CaptainTheDelta/modpack-helper/v0.9"
 
     PACKWIZ_BIN = "/usr/local/bin/packwiz"

@@ -133,7 +133,11 @@ def update_relations_modpack_mod(uuid, mods_by_categories, mods_infos):
 #================================== instance ==================================
 
 def get_uuid_from_url(url):
-    return url
+    if instance_already_exists(url):
+        return url
+    sql_stmt = db.select(CustomUrl.instance).where(CustomUrl.url==url)
+    instance_url = db.session.execute(sql_stmt).one_or_none()
+    return instance_url[0] if instance_url else ""
 
 def add_instance(instance_uuid, modpack_uuid):
     db.session.add(Instance(uuid=instance_uuid, modpack=modpack_uuid))

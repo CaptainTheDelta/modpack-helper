@@ -1,4 +1,4 @@
-from flask import Blueprint, make_response, render_template, request, redirect, send_from_directory
+from flask import Blueprint, current_app, make_response, render_template, request, redirect, send_from_directory
 
 from app.api import *
 from app.services.utils import get_instance_uuid
@@ -50,7 +50,8 @@ def generate():
 @bp.route("/mdpk/<url>", defaults={"path": "index.toml"})
 @bp.route("/mdpk/<url>/<path:path>")
 def serve_modpack(url, path):
-    path = '/'.join([get_uuid_from_url(url), path])
-    r = make_response(send_from_directory("instances", path))
+    folder = current_app.config["DOWNLOAD_FOLDER"]
+    path = os.path.join(get_uuid_from_url(url), path)
+    r = make_response(send_from_directory(folder, path))
     r.mimetype = "text/plain"
     return r
