@@ -36,8 +36,8 @@ def generate():
     uuid = get_instance_uuid(modpack_uuid, mods)
 
     if not instance_already_exists(uuid):
+        add_instance(uuid, modpack_uuid)
         folder = get_tmp_folder()
-        print(folder)
         packwiz_modpack = PackwizModpack(folder)
         packwiz_modpack.set_infos(get_modpack_infos(modpack_uuid))
         if packwiz_modpack.set_mods(mods):
@@ -47,7 +47,7 @@ def generate():
 
 
 
-@bp.route("/mdpk/<url>", defaults={"path": ""})
+@bp.route("/mdpk/<url>", defaults={"path": "index.toml"})
 @bp.route("/mdpk/<url>/<path:path>")
 def serve_modpack(url, path):
     path = '/'.join([get_uuid_from_url(url), path])

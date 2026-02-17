@@ -58,4 +58,9 @@ class Mod(db.Model):
 
 class Instance(db.Model):
     uuid = db.Column(db.String, primary_key=True)
-    modpack = db.Column(db.String, nullable=False)
+    modpack = db.Column(db.String, db.ForeignKey('modpack.uuid'), nullable=False)
+
+
+# class CustomUrl(db.Model):
+#     url = db.Column(db.String, primary_key=True)
+#     instance = db.Column(db.String, db.ForeignKey('instance.uuid'), nullable=False)

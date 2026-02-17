@@ -4,6 +4,9 @@ from app.services.storage import *
 from app.services.utils import get_value
 import json
 
+
+#================================== modpack ===================================
+
 def get_db_modpacks():
     """Renvoie la liste des modpacks présents dans la base de donnée."""
     modpacks = db.session.execute(db.select(Modpack)).all()
@@ -23,10 +26,21 @@ def get_modpack_game_version(uuid):
     return get_modpack(uuid).game_version
 
 def get_modpack_infos(uuid):
-    print(uuid)
-    modpack = get_modpack(uuid)
-    print(modpack)
-    return modpack.infos()
+    return get_modpack(uuid).infos()
+
+def add_modpack_description(infos, check=None):
+    uuid = Modpack.generate_uuid(infos)
+    assert check != None and check == uuid, "given uuid different from generated"
+
+    db.session.add(Modpack(uuid=uuid, **infos))
+    db.session.commit()
+
+def remove_db_modpack(uuid):
+    modpack = db.session.execute(db.select(Modpack).filter_by(uuid=uuid)).one()[0]
+    db.session.delete(modpack)
+    db.session.commit()
+
+#==================================== mod =====================================
 
 def get_modpack_mods(uuid):
     mods = {}
@@ -46,20 +60,12 @@ def get_modpack_mods(uuid):
             if mod["title"]:
                 mod["updated"] = mod["updated"].strftime("%d/%m/%Y")
                 mod["license"] = json.loads(mod["license"])
-                print(mod["categories"])
                 mod["categories"] = json.loads(mod["categories"])
             if relation.description != "":
                 mod["description"] = relation.description
             
             mods[relation.category].append(mod)
     return mods
-
-def add_modpack_description(infos, check=None):
-    uuid = Modpack.generate_uuid(infos)
-    assert check != None and check == uuid, "given uuid different from generated"
-
-    db.session.add(Modpack(uuid=uuid, **infos))
-    db.session.commit()
 
 def add_mods(slugs):
     for slug in slugs:
@@ -84,6 +90,13 @@ def update_mods(mods_infos):
 
     db.session.commit()
 
+def clean_unused_mods():
+    sql_stmt = db.select(Mod).where(~Mod.modpacks.any())
+    for mod in db.session.execute(sql_stmt).all():
+        db.session.delete(mod[0])
+    db.session.commit()
+
+#================================ modpack_mod ================================= 
 
 def add_relations_modpack_mod(uuid, slugs):
     for slug in slugs:
@@ -117,17 +130,7 @@ def update_relations_modpack_mod(uuid, mods_by_categories, mods_infos):
     db.session.commit()
 
 
-def remove_db_modpack(uuid):
-    modpack = db.session.execute(db.select(Modpack).filter_by(uuid=uuid)).one()[0]
-    db.session.delete(modpack)
-    db.session.commit()
-
-
-def clean_unused_mods():
-    sql_stmt = db.select(Mod).where(~Mod.modpacks.any())
-    for mod in db.session.execute(sql_stmt).all():
-        db.session.delete(mod[0])
-    db.session.commit()
+#================================== instance ==================================
 
 def get_uuid_from_url(url):
     return url

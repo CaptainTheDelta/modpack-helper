@@ -38,5 +38,6 @@ def get_modpacks_files():
     return [f.name for f in scan if f.is_file()]
 
 def move_modpack(folder, uuid):
-    path = os.path.join("instances", uuid)
+    download_folder = current_app.config["DOWNLOAD_FOLDER"]
+    path = os.path.join(download_folder, uuid)
     shutil.move(folder, path)
