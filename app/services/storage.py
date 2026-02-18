@@ -2,7 +2,6 @@ import os
 import shutil
 import yaml
 from flask import current_app
-from app.services.utils import slugs_only
 
 from tempfile import mkdtemp as get_tmp_folder
 

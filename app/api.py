@@ -1,10 +1,13 @@
 from flask import Blueprint, request, jsonify
 
 from app.models import Modpack
-from app.services.db import *
 from app.services.modrinth import get_modrinth_infos, get_mod_dependencies
 from app.services.storage import *
-from app.services.utils import slugs_only
+from app.services.utils import slugs_only, generate_modpack_uuid, to_dict
+
+import app.services.db.mod as db_mod
+import app.services.db.modpack as db_modpack
+import app.services.db.modpack_mod as db_modpack_mod
 
 bp = Blueprint("api", __name__)
 
@@ -17,22 +20,22 @@ def get_modpacks(internal=False):
     to_add = [] # ceux seulement dans le dossier
     to_remove = [] # ceux seulement dans la bdd
     
-    for m in get_db_modpacks():
-        if m.filename in current_files:
+    for m in db_modpack.get_all():
+        if m["filename"] in current_files:
             good_ones.append(m)
-            current_files.remove(m.filename)
+            current_files.remove(m["filename"])
         else:
             to_remove.append(m)
     
     for f in current_files:
         infos = read_modpack_desc(f)
-        infos["uuid"] = Modpack.generate_uuid(infos)
+        infos["uuid"] = generate_modpack_uuid(infos)
         to_add.append(infos)
     
     modpacks = {
-        "ok": [m.infos() for m in good_ones],
+        "ok": good_ones,
         "to_add": to_add,
-        "to_remove": [m.infos() for m in to_remove],
+        "to_remove": to_remove,
     }
     return modpacks if internal else jsonify(modpacks)
 
@@ -45,8 +48,8 @@ def add_modpack(uuid):
     slugs = slugs_only(mods_by_categories)
     desc = read_modpack_desc(filename)
     
-    add_modpack_description(desc, check=uuid)
-    add_mods(slugs)
+    db_modpack.add_description(desc, check=uuid)
+    db_mod.add_all(slugs)
     # les mods/modpack sont recréées à chaque update, pas besoin d'init
 
     update_modpack(uuid, filename)
@@ -58,21 +61,22 @@ def update_modpack(uuid, filename="", mods_by_categories=[]):
     """Recharge le modpack et mets à jour les mods associés"""
     if mods_by_categories == []:
         if filename == "":
-            filename = get_modpack_filename(uuid)
+            filename = db_modpack.get_filename(uuid)
         mods_by_categories = read_modpack_mods(filename)
 
     slugs = slugs_only(mods_by_categories)
     mods_infos = get_modrinth_infos(slugs)
 
-    update_mods(mods_infos)
-    update_relations_modpack_mod(uuid, mods_by_categories, mods_infos)
-    clean_unused_mods()
+    db_mod.update_all(mods_infos)
+    game_version = ""
+    db_modpack_mod.update_relations(uuid, game_version, mods_by_categories, mods_infos)
+    db_mod.clean_unused()
     
     return jsonify({"success": True})
 
 
 @bp.route("/modpack/remove/<uuid>", methods=["POST"])
 def remove_modpack(uuid):
-    remove_db_modpack(uuid)
-    clean_unused_mods()
+    db_modpack.remove(uuid)
+    db_mod.clean_unused()
     return jsonify({"success": True})

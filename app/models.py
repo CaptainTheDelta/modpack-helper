@@ -26,23 +26,6 @@ class Modpack(db.Model):
 
     mods = db.relationship("Mod", back_populates='modpacks', secondary=ModpackMod.__table__)
 
-    def infos(self):
-        return {
-            "uuid": self.uuid,
-            "name": self.name,
-            "author": self.author,
-            "version": self.version,
-            "game_version": self.game_version,
-            "filename": self.filename,
-        }   
-
-    @staticmethod
-    def generate_uuid(data):
-        values = {}
-        for k in ["name", "author", "version", "game_version", "filename"]:
-            values[k] = data.get(k, '')
-        return generate_uuid(values)
-
 @dataclass
 class Mod(db.Model):
     slug: str = db.Column(db.String, primary_key=True)
@@ -56,10 +39,6 @@ class Mod(db.Model):
     icon_url: str = db.Column(db.String)
 
     modpacks = db.relationship("Modpack", back_populates='mods', secondary=ModpackMod.__table__)
-
-    
-    def to_dict(self):
-        return dict((col, getattr(self, col)) for col in self.__table__.columns.keys())
 
 @dataclass
 class Instance(db.Model):
