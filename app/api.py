@@ -79,4 +79,5 @@ def update_modpack(uuid, filename="", mods_by_categories=[]):
 def remove_modpack(uuid):
     db_modpack.remove(uuid)
     db_mod.clean_unused()
+    db_mod.clean_unused_licenses()
     return jsonify({"success": True})

@@ -33,7 +33,6 @@ def useful_infos(mod):
         infos[key] = mod[key]
 
     infos["updated"] = datetime.datetime.fromisoformat(infos["updated"])
-    infos["license"] = json.dumps(infos["license"])
     infos["categories"] = json.dumps(infos["categories"])
 
     return infos

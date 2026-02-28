@@ -43,7 +43,6 @@ def get_mods(uuid):
 
             if mod["title"]:
                 mod["updated"] = mod["updated"].strftime("%d/%m/%Y") # FIXME
-                mod["license"] = json.loads(mod["license"]) # FIXME
                 mod["categories"] = json.loads(mod["categories"]) # FIXME
             if relation.description != "":
                 mod["description"] = relation.description

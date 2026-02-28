@@ -33,19 +33,29 @@ class Mod(db.Model):
     title: str = db.Column(db.String)
     description: str = db.Column(db.String)
     updated: datetime = db.Column(db.DateTime)
-    license: str = db.Column(db.String)
+    license_uuid: str = db.Column(db.String, db.ForeignKey('license.uuid'))
     downloads: int = db.Column(db.Integer)
     categories: str = db.Column(db.String)
     icon_url: str = db.Column(db.String)
 
+    license = db.relationship("License", back_populates="mods")
     modpacks = db.relationship("Modpack", back_populates='mods', secondary=ModpackMod.__table__)
 
 @dataclass
 class Instance(db.Model):
-    uuid = db.Column(db.String, primary_key=True)
-    modpack = db.Column(db.String, db.ForeignKey('modpack.uuid'), nullable=False)
+    uuid: str = db.Column(db.String, primary_key=True)
+    modpack: str = db.Column(db.String, db.ForeignKey('modpack.uuid'), nullable=False)
 
 @dataclass
 class CustomUrl(db.Model):
-    url = db.Column(db.String, primary_key=True)
-    instance = db.Column(db.String, db.ForeignKey('instance.uuid'), nullable=False)
+    url: str = db.Column(db.String, primary_key=True)
+    instance: str = db.Column(db.String, db.ForeignKey('instance.uuid'), nullable=False)
+
+@dataclass
+class License(db.Model):
+    uuid: str = db.Column(db.String, primary_key=True)
+    id: str = db.Column(db.String)
+    name: str = db.Column(db.String)
+    url: str = db.Column(db.String)
+
+    mods = db.relationship("Mod")
