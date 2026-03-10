@@ -4,12 +4,29 @@ from app.services.utils import get_value
 
 import app.services.db.modpack as db_modpack
 
-def add_relations_modpack_mod(uuid, slugs):
+def add_relations_modpack_mod(uuid: str, slugs: list[str]):
+    """Adds the relation between all the mods and the modpack.
+
+    This relation will be augmented with additionnal informations :
+    compatibility, custom description, etc.
+
+    Args:
+        uuid (str): Modpack identifier.
+        slugs (list[str]): List of slugs.
+    """
     for slug in slugs:
         db.session.add(ModpackMod(modpack=uuid, mod=slug))
     db.session.commit()
 
-def update_relations(uuid, game_version, mods_by_categories, mods_infos):
+def update_relations(uuid: str, game_version: str, mods_by_categories: dict, mods_infos: list[dict]):
+    """Adds information for each mod modpack relation.
+
+    Args:
+        uuid (str): Modpack instance
+        game_version (str): String reprensenting game version (ex: "1.21.11")
+        mods_by_categories (dict): {category:[slugs]}
+        mods_infos (list[dict]): [{slug:value, infos:...}]
+    """
     # on supprime toutes les relations
     sql_stmt = db.select(ModpackMod).where(ModpackMod.modpack==uuid)
     for relation in db.session.execute(sql_stmt).all():
